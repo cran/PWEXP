@@ -25,3 +25,24 @@
     \item (sim_followup) fix an error when type='sample' or 'event', but 'at' is not an integer
   }
 }
+
+\section{Changes in version 0.3.1}{
+  \itemize{
+    \item (plot_event) fix an error that 'xlab', 'ylab' do not work when 'xyswitch=TRUE'
+  }
+}
+
+\section{Changes in version 0.4.0}{
+  \itemize{
+    \item (boot.pwexp.fit) add 'parallel' option
+    \item (cv.pwexp.fit) add 'parallel' option
+  }
+}
+
+\section{Changes in version 0.4.1}{
+  \itemize{
+    \item (plot_event) rewrite 'xyswitch=TRUE' to have the same result as 'xyswitch=FALSE'
+    \item add 'Depends: survival, fastmatch' to DESCRIPTION
+    \item (boot.pwexp.fit, cv.pwexp.fit) correctly attach functions in 'doSNOW', 'foreach' packages
+  }
+}
