@@ -1,4 +1,4 @@
-96659bf1e5b770dca0d28a18b8b89987 *DESCRIPTION
+02dd411ca2db4ce7298c99ae67b02336 *DESCRIPTION
 7b19cbd88e130f76d382e526c63c9f87 *LICENSE
 3a38ca03bae3acc18abce7187e9eb1d1 *NAMESPACE
 bd9f881b083d8aca5952f7f0b476d463 *R/fitting.R
@@ -7,10 +7,10 @@ abc05914b31c73c4c583799243c1adba *R/prediction.R
 79ed7a0a0bf97b029e5b2d78f00aa73a *R/preprocess.R
 48bdb7a192cb6b1c96af627b8fb7000d *R/pwexp.R
 23c570dc6f89d463e22e0eaea60e61e8 *R/sim_followup_fun.R
-17d3f54a64c4d1b75a0b569f77a167ac *R/simdata.R
+987afde32069610a89dce6eb724037a0 *R/simdata.R
 30bda20055d05daff29e62a147e73e7f *README.md
 fa42e825694a3fc7394f65dfea9769c9 *build/vignette.rds
-59c1655d9cd0c7072e6a1fc237079f94 *inst/NEWS.Rd
+47f53f650d1d624da1090089312043e9 *inst/NEWS.Rd
 e3280a06e24d519063d1bf5835dc8e84 *inst/doc/Theory_Notes.R
 d453c87930c4ec47380892d785f2a0de *inst/doc/Theory_Notes.Rmd
 382a4856176de9114e5c7037a92ec4e9 *inst/doc/Theory_Notes.html

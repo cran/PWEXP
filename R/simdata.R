@@ -48,13 +48,13 @@ simdata <- function(group="Group 1", strata='Strata 1', allocation=1, event_lamb
   if (!is.null(n_rand)){
     Total_d <- sum(n_rand)
     t_rand <- 1:length(n_rand)
-    popd <- mapply(runif, n=n_rand, min=c(0,t_rand[-length(t_rand)]), max=t_rand, SIMPLIFY = F)
+    popd <- mapply(runif, n=n_rand, min=t_rand-1, max=t_rand, SIMPLIFY = F)
   }else if (round(rand_rate)==rand_rate){
     n_rand <- rep(rand_rate, ceiling(total_sample/rand_rate))
     n_rand[length(n_rand)] <- total_sample - sum(n_rand[-length(n_rand)])
     Total_d <- sum(n_rand)
     t_rand <- 1:length(n_rand)
-    popd <- mapply(runif, n=n_rand, min=c(0,t_rand[-length(t_rand)]), max=t_rand, SIMPLIFY = F)
+    popd <- mapply(runif, n=n_rand, min=t_rand-1, max=(t_rand-1)+n_rand/rand_rate, SIMPLIFY = F)
   }else{
     Total_d <- total_sample
     popd <- runif(total_sample, 0, total_sample/rand_rate)
