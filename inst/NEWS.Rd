@@ -1,6 +1,13 @@
 \name{NEWS}
 \title{News for Package \pkg{PWEXP}}
 
+\section{Changes in version 0.4.4}{
+  \itemize{
+    \item(simdata) allow non-integer values in 'n_rand', 'rand_rate'
+    \item(sim_followup) allow non-integer values in 'n_rand', 'rand_rate'
+  }
+}
+
 \section{Changes in version 0.4.3}{
   \itemize{
     \item(simdata) change enroll behavior. For example, when rand_rate=20, total_sample=25, in the previous version, randT is between 0 to 2, but now randT is between 0 to 1.25.
