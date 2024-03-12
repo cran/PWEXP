@@ -1,4 +1,4 @@
-predict.pwexp.fit <- function(object, cut_indicator=NULL, analysis_time, censor_model=NULL, type='predictive', n_each=100, future_rand=NULL, seed=1818, ...){
+predict.pwexp.fit <- function(object, cut_indicator=NULL, analysis_time, censor_model=NULL, n_each=100, future_rand=NULL, seed=1818, ...){
   # future_rand is a list containing parameters in simdata
   # model is a fitted model
   event_model <- object
@@ -12,18 +12,15 @@ predict.pwexp.fit <- function(object, cut_indicator=NULL, analysis_time, censor_
       attr(censor_model,'brk') <- matrix(attr(censor_model,'brk'),nrow=1)
     }
   }
-  res <- predict.boot.pwexp.fit(object = event_model, cut_indicator = cut_indicator, analysis_time = analysis_time, censor_model_boot = censor_model, type = type, n_each = n_each, future_rand = future_rand, seed = seed)
+  res <- predict.boot.pwexp.fit(object = event_model, cut_indicator = cut_indicator, analysis_time = analysis_time, censor_model_boot = censor_model, n_each = n_each, future_rand = future_rand, seed = seed)
   class(res) <- c('predict.pwexp.fit','list')
   return(res)
 }
 
-predict.boot.pwexp.fit <- function(object, cut_indicator=NULL, analysis_time, censor_model_boot=NULL, type='predictive', n_each=10, future_rand=NULL, seed=1818, ...){
+predict.boot.pwexp.fit <- function(object, cut_indicator=NULL, analysis_time, censor_model_boot=NULL, n_each=10, future_rand=NULL, seed=1818, ...){
   # future_rand is a list containing parameters in simdata
   # model is a fitted model
   event_model_boot <- object
-  if (!(type %in% c('predictive','confidence'))){
-    stop('wrong type argument.')
-  }
   if (is.null(censor_model_boot)){
     censormodel <- FALSE
     if (is.null(cut_indicator)){
@@ -62,13 +59,11 @@ predict.boot.pwexp.fit <- function(object, cut_indicator=NULL, analysis_time, ce
   censor_l <- 0
   censor_b <- NULL
   nsim <- NROW(event_model_boot)
-  line_data_fun <- NULL
-  line_data_fun_time <- NULL
-  if (type=='confidence'){
-    n_each <- 1
-  }
+  line_data_fun <- list()
+  # if (type=='confidence'){
+  #   n_each <- 1
+  # }
   pb <- txtProgressBar(style = 3)
-  max_time <- 0
   for (j in 1:n_each){
     if (n_each!=1){
       setTxtProgressBar(pb, j/n_each)
@@ -84,8 +79,8 @@ predict.boot.pwexp.fit <- function(object, cut_indicator=NULL, analysis_time, ce
       if (length(censor_b)==0) censor_b <- NULL
       if (future){
         dat_t <- simdata(advanced_dist = list(
-          event_dist=function(n)rpwexp(n,event_l,event_b),
-          drop_dist=function(n)rpwexp(n,censor_l,censor_b)),
+          event_dist=function(n)PWEXP::rpwexp(n,event_l,event_b),
+          drop_dist=function(n)PWEXP::rpwexp(n,censor_l,censor_b)),
           n_rand=future_rand$n_rand, rand_rate=future_rand$rand_rate, total_sample=future_rand$total_sample,
           add_column = c('event','censor_reason','followT_abs','followT'))
         dat_t$followT_abs <- dat_t$followT_abs+analysis_time
@@ -106,22 +101,20 @@ predict.boot.pwexp.fit <- function(object, cut_indicator=NULL, analysis_time, ce
       line_data <- rbind(c(analysis_time, sum(para$event)), line_data)
       flag <- tryCatch({
         tmp_line_dat_fun <- suppressWarnings(approxfun(line_data$time, line_data$n_event, rule=1:2))
-        # tmp_line_data_fun_time <- suppressWarnings(approxfun(line_data$n_event, line_data$time, rule=1))
       }, error = function(e){
         e
       })
       if (inherits(flag, "error")){
         next
       }else{
-        line_data_fun <- c(line_data_fun,tmp_line_dat_fun)
-        # line_data_fun_time <- c(line_data_fun_time, tmp_line_data_fun_time)
+        line_data_fun[[paste0('boot_sample_',i , '_n_each_', j)]] <- tmp_line_dat_fun
+        # line_data_fun <- c(line_data_fun,tmp_line_dat_fun)
       }
     }
   }
   setTxtProgressBar(pb, 1)
   close(pb)
   res <- list(event_fun=line_data_fun)
-  # res <- list(event_fun=line_data_fun,time_fun=line_data_fun_time)
   class(res) <- c('predict.boot.pwexp.fit','list')
   return(res)
 }

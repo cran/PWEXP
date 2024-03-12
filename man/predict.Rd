@@ -7,9 +7,9 @@
 }
 \usage{
 \method{predict}{pwexp.fit}(object, cut_indicator=NULL, analysis_time, censor_model=NULL,
-      type='predictive', n_each=100, future_rand=NULL, seed=1818, ...)
+      n_each=100, future_rand=NULL, seed=1818, ...)
 \method{predict}{boot.pwexp.fit}(object, cut_indicator=NULL, analysis_time,
-      censor_model_boot=NULL, type='predictive', n_each=10, future_rand=NULL,
+      censor_model_boot=NULL, n_each=10, future_rand=NULL,
       seed=1818, ...)
 }
 \arguments{
@@ -18,7 +18,6 @@
   \item{analysis_time}{the analysis time. This is the time length from the start of the trial to the time collecting data for the model. }
   \item{censor_model}{an object of class \code{pwexp.fit} returned by the \code{\link{pwexp.fit}} function. It is the censoring model for drop-out and death. }
   \item{censor_model_boot}{an object of class \code{boot.pwexp.fit} returned by the \code{\link{boot.pwexp.fit}} function. It is the censoring model with bootstrapping for drop-out and death. }
-  \item{type}{the type of prediction required. The default \code{predictive} returns the predictive interval; the alternative \code{confidence} returns the confidence interval without random error.}
   \item{n_each}{the number of iterations for each bootstrapping sample to obtain predicitive CI. Typically, a value of 10 to 100 should be enough. }
   \item{future_rand}{the randomization curve in the following times. Can be \code{NULL} if all subjects have been randomized. You can specify \bold{future} rand rate and \bold{future} total number of samples to be randomized by \code{list(rand_rate= ,total_sample= )} or specify the \bold{future} number of randomization each month by \code{list(rand_n= )}. See details.}
   \item{seed}{a random seed.}
@@ -45,7 +44,7 @@ Tianchen Xu \email{zjph602xutianchen@gmail.com}
 \seealso{\code{\link{plot_event}}}
 \examples{
 set.seed(1818)
-event_dist <- function(n)rpwexp(n, rate = c(0.1, 0.01, 0.2), breakpoint =  c(5,14))
+event_dist <- function(n)rpwexp(n, rate = c(0.1, 0.2), breakpoint = 14)
 dat <- simdata(rand_rate = 20, drop_rate = 0.03,  total_sample = 500,
                advanced_dist = list(event_dist=event_dist),
                add_column = c('censor_reason','event','followT','followT_abs'))
